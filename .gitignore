@@ -1,3 +1,11 @@
 *.a
 *.so
+*.o
+*.hex
+*.bin
+*.elf
+*.map
+
 credentials.h
+
+.DS_Store
