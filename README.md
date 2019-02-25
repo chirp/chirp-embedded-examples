@@ -31,7 +31,7 @@ The audio data is sent via the 3.5mm jack output.
 
 See the [README](microsoft-mxchip/README.md) for further details.
 
-## STM32F469i Discovery
+## STM32F469i Discovery
 
 This example shows a simple demonstration of the Chirp SDK. The example will start in listening mode,
 but can be changed to playing mode and vice versa by pressing the user button (blue one).
