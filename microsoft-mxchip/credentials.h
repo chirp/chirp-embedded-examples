@@ -9,8 +9,8 @@
  *
  *----------------------------------------------------------------------------*/
 
-#ifndef Credentials_h
-#define Credentials_h
+#ifndef __CREDENTIALS_H__
+#define __CREDENTIALS_H__
 
 #error("Add your credentials below (from https://developers.chirp.io) and delete this line.")
 
@@ -18,4 +18,4 @@
 #define CHIRP_APP_SECRET     "YOUR_APP_SECRET"
 #define CHIRP_APP_CONFIG     "YOUR_APP_CONFIG"
 
-#endif /* Credentials_h */
+#endif /* __CREDENTIALS_H__ */

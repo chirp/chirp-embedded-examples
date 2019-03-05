@@ -6,7 +6,7 @@
  *
  *  @brief After creating a developer account on https://developers.chirp.io,
  *  get your key, secret and config string from your account using the "16kHz"
- *  protocol, and set them in this file (in APP_KEY, APP_SECRET, APP_CONFIG).
+ *  protocol, and set them in the credentials.h file.
  *
  *  This example will start in listening mode. The listening and playing modes
  *  can alternate by pressing the user button (blue one).
