@@ -1,4 +1,5 @@
 *.a
+!*/chirp/*.a
 *.so
 *.o
 *.hex

@@ -4,7 +4,7 @@
  *
  *  @file chirp_sdk_defines.h
  *
- *  @brief Defines for the chirp SDK interfaces.
+ *  @brief Defines for the Chirp SDK interfaces.
  *
  *  All contents are strictly proprietary, and not for copying, resale,
  *  or use outside of the agreed license.
@@ -21,6 +21,10 @@
 extern "C" {
 #endif
 
+/**
+ * Mark the function as public. Any attempt to call a function without this
+ * marker will fail.
+ */
 #if defined(__WIN32) || defined(_WIN32) || defined(WIN32)
 #define PUBLIC_SYM __declspec(dllexport)
 #else
