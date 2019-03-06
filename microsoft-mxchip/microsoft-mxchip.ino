@@ -24,7 +24,7 @@
  *
  *  See README.md for further information and known issues.
  *
- *  Copyright © 2011-2018, Asio Ltd.
+ *  Copyright © 2011-2019, Asio Ltd.
  *  All rights reserved.
  *
  *----------------------------------------------------------------------------*/
