@@ -4,6 +4,8 @@
  *
  *  @file chirp_connect.h
  *
+ *  @brief Chirp C SDK implementation header.
+ *
  *  All contents are strictly proprietary, and not for copying, resale,
  *  or use outside of the agreed license.
  *
@@ -12,8 +14,8 @@
  *
  *----------------------------------------------------------------------------*/
 
-#ifndef __CHIRP_CONNECT_H__
-#define __CHIRP_CONNECT_H__
+#ifndef CHIRP_CONNECT_H
+#define CHIRP_CONNECT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,7 +23,6 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <time.h>
 
 #include "chirp_connect_callbacks.h"
 #include "chirp_sdk_defines.h"
@@ -46,8 +47,8 @@ typedef struct _chirp_connect_t chirp_connect_t;
 PUBLIC_SYM chirp_connect_t *new_chirp_connect(const char *key, const char *secret);
 
 /**
- * Free the memory of the SDK. This function should be the last one to be called
- * among all the API functions.
+ * Release the SDK. This function should be the last one to be called among all
+ * the API functions.
  *
  * During the program life time, this function should be called only one time.
  *
@@ -59,6 +60,7 @@ PUBLIC_SYM chirp_connect_error_code_t del_chirp_connect(chirp_connect_t **connec
 
 /**
  * Free some memory previously allocated and returned by the SDK.
+ *
  * @param ptr The pointer to the memory to be freed.
  */
 PUBLIC_SYM void chirp_connect_free(void *ptr);
@@ -71,7 +73,7 @@ PUBLIC_SYM void chirp_connect_free(void *ptr);
  *
  * @param connect A pointer to the SDK structure which needs the config to be
  *                set.
- * @param config The config string which will be set.
+ * @param config  The config string which will be set.
  * @return        An error code resulting from the call. CHIRP_CONNECT_OK will
  *                be returned if everything went well.
  */
@@ -138,21 +140,13 @@ PUBLIC_SYM chirp_connect_error_code_t chirp_connect_pause(chirp_connect_t *conne
 PUBLIC_SYM chirp_connect_error_code_t chirp_connect_stop(chirp_connect_t *connect);
 
 /**
- * Allocate a new empty payload which will later be filled with the data to send.
- * To release the memory, call `chirp_connect_free` on the data pointer.
- *
- * @param connect A pointer to the SDK structure.
- * @param length  The length, in bytes, of the new payload.
- * @return        A pointer to the newly created data payload.
- */
-PUBLIC_SYM uint8_t *chirp_connect_new_payload(chirp_connect_t *connect, size_t length);
-
-/**
  * Get the maximum payload length allowed by the current config set for the SDK.
+ *
  *
  * @param connect A pointer to the SDK structure.
  * @return        The maximum payload length that can be sent. A length of 0 is
- *                invalid.
+ *                invalid. If the config hasn't been set yet when this function
+ *                is called 0 is returned.
  */
 PUBLIC_SYM size_t chirp_connect_get_max_payload_length(chirp_connect_t *connect);
 
@@ -160,8 +154,11 @@ PUBLIC_SYM size_t chirp_connect_get_max_payload_length(chirp_connect_t *connect)
  * Get the duration, in seconds, for a given payload length.
  *
  * @param connect A pointer to the SDK structure.
- * @param length  The length, in bytes, of the payload we want to know the duration.
- * @return        The duration, in second, of the given length.
+ * @param length  The length, in bytes, of the payload we want to know the
+ *                duration. You can get the maximum allowed length with
+ *                `chirp_connect_get_max_payload_length`.
+ * @return        The duration, in second, of the given length, -1 if the payload
+ *                is too short or -2 if the payload is too long.
  */
 PUBLIC_SYM float chirp_connect_get_duration_for_payload_length(chirp_connect_t *connect, size_t length);
 
@@ -184,7 +181,8 @@ PUBLIC_SYM chirp_connect_error_code_t chirp_connect_is_valid(chirp_connect_t *co
  * @param length  A pointer containing the length, in bytes, of the payload to be
  *                generated. If the length is 0, the SDK will randomise both the
  *                length of the payload and its content. The length pointer will
- *                then be updated with the random length.
+ *                then be updated with the random length. You can get the
+ *                maximum allowed length with `chirp_connect_get_max_payload_length`.
  * @return        A pointer to the newly created random data payload.The user
  *                has to free this pointer once they doesn't need it anymore using
  *                `chirp_connect_free`.
@@ -205,7 +203,8 @@ PUBLIC_SYM uint8_t *chirp_connect_random_payload(chirp_connect_t *connect, size_
 PUBLIC_SYM char *chirp_connect_as_string(chirp_connect_t *connect, uint8_t *bytes, size_t length);
 
 /**
- * Send a payload.
+ * Send a payload. A valid length is between 1 and the value returned by
+ * `chirp_connect_get_max_payload_length`.
  *
  * @param connect A pointer to the SDK structure.
  * @param bytes   A pointer to the payload that will be sent.
@@ -341,7 +340,7 @@ PUBLIC_SYM chirp_connect_state_t chirp_connect_get_state(chirp_connect_t *connec
  * audio volume.
  *
  * @param connect A pointer to the SDK structure.
- * @return        The volume of the output of SDK.
+ * @return        The volume of the output of the SDK or -1 if an error happened.
  */
 PUBLIC_SYM float chirp_connect_get_volume(chirp_connect_t *connect);
 
@@ -460,4 +459,4 @@ PUBLIC_SYM const char *chirp_connect_get_version(void);
 #ifdef __cplusplus
 }
 #endif
-#endif // __CHIRP_CONNECT_H__
+#endif /* !CHIRP_CONNECT_H */

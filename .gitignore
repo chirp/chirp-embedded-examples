@@ -1,4 +1,5 @@
 *.a
+!*/chirp/*.a
 *.so
 *.o
 *.hex
@@ -6,6 +7,7 @@
 *.elf
 *.map
 
+.vscode
 credentials.h
 
 .DS_Store

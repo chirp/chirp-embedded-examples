@@ -55,9 +55,9 @@ Now that the project compiles, the example code needs to be completed with your 
 Open `credentials.h` and copy and paste your app key, secret and config string for the `16kHz` protocol from the [Chirp developer hub](https://developers.chirp.io).
 
 ```C
-#define APP_KEY     "YOUR_APP_KEY"
-#define APP_SECRET  "YOUR_APP_SECRET"
-#define APP_CONFIG  "YOUR_16KHZ_CONFIG"
+#define CHIRP_APP_KEY     "YOUR_APP_KEY"
+#define CHIRP_APP_SECRET  "YOUR_APP_SECRET"
+#define CHIRP_APP_CONFIG  "YOUR_16KHZ_CONFIG"
 ```
 
 At this point the code should compile and run. Plug your MXChip to the computer, execute the same command as when you tested the compilation in the previous step but select `Arduino: Upload`. This will compile the code and upload it to the board.

@@ -6,7 +6,7 @@
  *
  *  @brief After creating a developer account on https://developers.chirp.io,
  *  get your key, secret and config string from your account using the "16kHz"
- *  protocol, and set them in this file (in APP_KEY, APP_SECRET, APP_CONFIG).
+ *  protocol, and set them in the credentials.h file.
  *
  *  This example will start in listening mode. The listening and playing modes
  *  can alternate by pressing the user button (blue one).
@@ -88,9 +88,6 @@ void on_sending_callback(void *data, uint8_t *payload, size_t length, uint8_t ch
 {
 	// This call erase all previously displayed elements on the screen.
 	set_screen_color(LCD_COLOR_YELLOW);
-
-	// The payload field in callbacks has to be freed by users
-	chirp_connect_free(payload);
 }
 
 /*
@@ -104,14 +101,12 @@ void on_sent_callback(void *data, uint8_t *payload, size_t length, uint8_t chann
 	set_screen_color(LCD_COLOR_WHITE);
 	display_message(hexa_string, LCD_COLOR_BLACK);
 	display_message(str_length, LCD_COLOR_BLACK);
-	chirp_connect_free(payload);
 	chirp_connect_free(hexa_string);
 }
 
 void on_receiving_callback(void *connect, uint8_t *payload, size_t length, uint8_t channel)
 {
 	set_screen_color(LCD_COLOR_BLUE);
-	chirp_connect_free(payload);
 	printf("Receiving data.\n");
 }
 
@@ -125,7 +120,6 @@ void on_received_callback(void *connect, uint8_t *payload, size_t length, uint8_
 		itoa((int) length, str_length, 10);
 		display_message(hexa_string, LCD_COLOR_BLACK);
 		display_message(str_length, LCD_COLOR_BLACK);
-		chirp_connect_free(payload);
 	}
 	else
 	{
@@ -141,14 +135,14 @@ void on_received_callback(void *connect, uint8_t *payload, size_t length, uint8_
  */
 void setup(uint32_t sample_rate)
 {
-	connect = new_chirp_connect(APP_KEY, APP_SECRET);
+	connect = new_chirp_connect(CHIRP_APP_KEY, CHIRP_APP_SECRET);
 	if (connect == NULL)
 	{
 		printf("Chirp Connect initialisation failed.\n");
 		error_handler(__func__, __FILE__, __LINE__);
 	}
 
-	chirp_connect_error_code_t err = chirp_connect_set_config(connect, APP_CONFIG);
+	chirp_connect_error_code_t err = chirp_connect_set_config(connect, CHIRP_APP_CONFIG);
 	if (err != CHIRP_CONNECT_OK)
 		chirp_error_handler(err);
 
