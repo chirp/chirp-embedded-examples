@@ -25,8 +25,8 @@ The audio data is sent via the 3.5mm jack output.
 
 ## Setup
 
-Copy/paste your Chirp app key, secret and config string for the `16kHz` protocol into the `credentials.h` file.
-Currently only the `16kHz` protocol will work on embedded devices.
+Copy/paste your Chirp app key, secret and config string into the `credentials.h` file.
+*Important*: Currently only the `16kHz` and `16khz-mono` protocols will work on embedded devices.
 
 ## Building
 
