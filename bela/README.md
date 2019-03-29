@@ -19,6 +19,10 @@ You can connect the microphone the following way :
 
 Use the connector shipped with Bela to connect a speaker to the LEFT OUT connector.
 
+This is an example of how the montage should look like :
+
+![chirp+bela](chirp+bela.jpg)
+
 Copy/paste your Chirp app key, secret and config string into the `credentials.h` file.
 
 Download the Chirp SDK for arm. The library needed is `libchirp-connect_linux-arm-hard-shared.so`.

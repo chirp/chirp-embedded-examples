@@ -37,7 +37,7 @@ See the [README](stm32f746g-discovery/README.md) for further details.
 
 ## Chirp + Bela
 
-![chirp+bela](bela/chirp+bela.jpg)
+![chirp+bela](bela/bela-cape.jpg)
 
 This example shows a simple demonstration of sending and receiving data with the Chirp SDK on Bela cape for BeagleBone Black board.
 
