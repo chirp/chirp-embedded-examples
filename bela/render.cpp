@@ -227,7 +227,7 @@ void render(BelaContext *context, void *userData)
     static int write_pointer = 0;
 
     /*
-     * To keep track of where to write the samples in the input buffer.
+     * To keep track of where to read the samples in the output buffer.
      */
     static int read_pointer = 0;
 
