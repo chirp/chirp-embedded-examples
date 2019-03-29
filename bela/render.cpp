@@ -87,10 +87,18 @@ void chirp_process_output_audio(void* data)
 
 void on_received_callback(void *ptr, uint8_t *payload, size_t length, uint8_t channel)
 {
-    char *msg = (char *) calloc(length + 1, sizeof(char));
-    memcpy(msg, payload, sizeof(char) * length);
-    rt_printf("Data received : %s\n", msg);
-    free(msg);
+    if (payload)
+    {
+        char *msg = (char *) calloc(length + 1, sizeof(char));
+        memcpy(msg, payload, sizeof(char) * length);
+        rt_printf("Data received : %s\n", msg);
+        free(msg);
+    }
+    else
+    {
+        rt_printf("Decoding failed\n");
+    }
+
 }
 
 void on_state_changed_callback(void *ptr, chirp_connect_state_t old_state, chirp_connect_state_t new_state)
