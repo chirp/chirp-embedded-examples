@@ -34,3 +34,11 @@ See the [README](stm32f469i-discovery/README.md) for further details.
 This example shows a simple demonstration of sending and receiving data with the Chirp SDK on the STM32F746g discovery board.
 
 See the [README](stm32f746g-discovery/README.md) for further details.
+
+## Chirp + Bela
+
+![chirp+bela](bela/chirp+bela.jpg)
+
+This example shows a simple demonstration of sending and receiving data with the Chirp SDK on Bela cape for BeagleBone Black board.
+
+See the [README](bela/README.md) for further details.
