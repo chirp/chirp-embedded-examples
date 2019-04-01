@@ -8,6 +8,6 @@
 *.map
 
 .vscode
-credentials.h
+.build
 
 .DS_Store
