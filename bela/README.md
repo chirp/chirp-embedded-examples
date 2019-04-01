@@ -36,7 +36,7 @@ On the right, click on the folder icon (Project Explorer) and then in `Manage pr
 
 Select the type to be `C++` if it is not already selected and enter the name of your project and click on `Create`.
 
-Always in `Project Explorer`, click on `Upload file`. Select the Chirp shared library as well as the `chirp_connect*.h` headers, `credentials.h` and `render.cpp`. A warning window will tell you `render.cpp` already exist. Click on `Overwrite`. At this point the `Project Explorer` should only display the Chirp files, `credentials.h` and `render.cpp`.
+Always in `Project Explorer`, click on `Upload file`. Select the Chirp shared library as well as the `chirp_connect*.h` headers located in the `chirp` folder, `credentials.h` and `render.cpp`. A warning window will tell you `render.cpp` already exist. Click on `Overwrite`. At this point the `Project Explorer` should only display the Chirp files, `credentials.h` and `render.cpp`.
 
 Go to the `Project Settings`, select the `Block size` to 128 and the sample rate to 44100. Then, paste the following line in the `Make Parameters :` field replacing <name_of_your_project> by the name of your actual project :
 

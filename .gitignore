@@ -9,6 +9,5 @@
 
 .vscode
 .build
-credentials.h
 
 .DS_Store
