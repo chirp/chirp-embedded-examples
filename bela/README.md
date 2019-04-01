@@ -6,7 +6,7 @@ receive data via sound with Chirp SDK !
 ## Prerequisites
 
 - Follow the [Getting started with Bela](https://github.com/BelaPlatform/Bela/wiki/Getting-started-with-Bela) to get your board setup if it is not yet.
-- Sign up to Chirp at the [Chirp developer hub](https://developers.chirp.io) to download our SDK for free.
+- Sign up to Chirp at the [Chirp developer hub](https://developers.chirp.io) to get your credentials.
 - A microphone, the [Electret Microphone](https://www.sparkfun.com/products/12758) works well.
 - A speaker.
 
@@ -25,8 +25,6 @@ See the image below for an example set up :
 
 Copy/paste your Chirp app key, secret and config string into the `credentials.h` file.
 
-Download the Chirp SDK for arm. The library needed is `libchirp-connect_linux-arm-hard-shared.so`.
-
 ## Building
 
 Once the board is plugged to your computer, wait the time it boots and then go to
@@ -36,7 +34,7 @@ On the right, click on the folder icon (Project Explorer) and then in `Manage pr
 
 Select the type to be `C++` if it is not already selected and enter the name of your project and click on `Create`.
 
-Always in `Project Explorer`, click on `Upload file`. Select the Chirp shared library as well as the `chirp_connect*.h` headers located in the `chirp` folder, `credentials.h` and `render.cpp`. A warning window will tell you `render.cpp` already exist. Click on `Overwrite`. At this point the `Project Explorer` should only display the Chirp files, `credentials.h` and `render.cpp`.
+Always in `Project Explorer`, click on `Upload file`. Select `libchirp-connect_linux-arm-hard-shared.so` as well as the `chirp_connect*.h` headers located in the `chirp` folder, `credentials.h` and `render.cpp`. A warning window will tell you `render.cpp` already exist. Click on `Overwrite`. At this point the `Project Explorer` should only display the Chirp files, `credentials.h` and `render.cpp`.
 
 Go to the `Project Settings`, select the `Block size` to 128 and the sample rate to 44100. Then, paste the following line in the `Make Parameters :` field replacing <name_of_your_project> by the name of your actual project :
 
