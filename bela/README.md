@@ -19,7 +19,7 @@ You can connect the microphone the following way :
 
 Use the connector shipped with Bela to connect a speaker to the LEFT OUT connector.
 
-This is an example of how the montage should look like :
+See the image below for an example set up :
 
 ![chirp+bela](chirp+bela.jpg)
 

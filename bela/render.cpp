@@ -2,7 +2,7 @@
  *
  *  render.cpp
  *
- *  This exemple sends "Hello World !" when it starts and decodes it at the same
+ *  This example sends "Hello World !" when it starts and decodes it at the same
  *  time.
  *
  *  For full information on usage and licensing, see https://chirp.io/
@@ -46,7 +46,7 @@ static float *output_buffer = NULL;
 /*
  * Input channel used. Chirp only support audio mono data.
  */
-int input_channel = 0;
+static int input_channel = 0;
 
 /*
  * Global instance of the SDK.
