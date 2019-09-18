@@ -1,12 +1,12 @@
 /**-----------------------------------------------------------------------------
  *
- *  Simple example of the Chirp Connect Arm SDK on the STM32F469I-DISCOVERY.
+ *  Simple example of the Chirp C SDK on the STM32F469I-DISCOVERY.
  *
  *  @file application.c
  *
  *  @brief After creating a developer account on https://developers.chirp.io,
- *  get your key, secret and config string from your account using the "16kHz"
- *  protocol, and set them in the credentials.h file.
+ *  get your key, secret and config string from your account and set them in the
+ *  credentials.h file.
  *
  *  This example will start in listening mode. The listening and playing modes
  *  can alternate by pressing the user button (blue one).
@@ -35,7 +35,7 @@
  * Main Chirp Connect header. This header and the ones it depends on must be in
  * the same folder. For this example it is the `chirp` one.
  */
-#include "chirp_connect.h"
+#include "chirp_sdk.h"
 #include "credentials.h"
 
 /*
@@ -47,21 +47,33 @@
  * Global pointer to the SDK structure. This is global as this pointer is
  * needed when processing the audio in the loop() function.
  */
-chirp_connect_t *connect = NULL;
+chirp_sdk_t *chirp = NULL;
 
 /*
  * Simple error handler which display an error message on the serial port and
  * loop indefinitely.
  */
-void chirp_error_handler(chirp_connect_error_code_t errorCode)
+void chirp_error_handler(chirp_sdk_error_code_t errorCode)
 {
-	if (errorCode != CHIRP_CONNECT_OK)
+	if (errorCode != CHIRP_SDK_OK)
 	{
-		const char *error_string = chirp_connect_error_code_to_string(errorCode);
+		const char *error_string = chirp_sdk_error_code_to_string(errorCode);
 		printf("Chirp error handler : %s\n", error_string);
-		chirp_connect_free((void *) error_string);
+		chirp_sdk_free((void *) error_string);
 		while(true);
 	}
+}
+
+/*
+ * Convert a payload to an hexadecimal string terminated with a '\0'.
+ */
+void payload_to_hex(char *payload, int payload_length, char *hex_str)
+{
+    for (int i = 0; i < payload_length; i++)
+    {
+        sprintf(hex_str + i * 2, "%02x", payload[i]);
+    }
+    hex_str[payload_length * 2] = '\0';
 }
 
 /*
@@ -71,13 +83,13 @@ void on_screen_touch(void)
 {
 	// A length of 0 means random length
 	size_t payload_length = 0;
-	uint8_t *payload = chirp_connect_random_payload(connect, &payload_length);
+	uint8_t *payload = chirp_sdk_random_payload(chirp, &payload_length);
 
 	// At this point, the value of `payload_length` has been updated with the new
 	// random length
-	chirp_connect_error_code_t error = chirp_connect_send(connect, payload, payload_length);
-	chirp_connect_free(payload);
-	if (error != CHIRP_CONNECT_OK)
+	chirp_sdk_error_code_t error = chirp_sdk_send(chirp, payload, payload_length);
+	chirp_sdk_free(payload);
+	if (error != CHIRP_SDK_OK)
 		chirp_error_handler(error);
 }
 
@@ -95,27 +107,28 @@ void on_sending_callback(void *data, uint8_t *payload, size_t length, uint8_t ch
  */
 void on_sent_callback(void *data, uint8_t *payload, size_t length, uint8_t channel)
 {
-	char *hexa_string = chirp_connect_as_string(connect, payload, length);
+	char hexa_string[length * 2 + 1];
+	payload_to_hex((char *) payload, length, hexa_string);
 	char str_length[16];
 	itoa((int) length, str_length, 10);
 	set_screen_color(LCD_COLOR_WHITE);
 	display_message(hexa_string, LCD_COLOR_BLACK);
 	display_message(str_length, LCD_COLOR_BLACK);
-	chirp_connect_free(hexa_string);
 }
 
-void on_receiving_callback(void *connect, uint8_t *payload, size_t length, uint8_t channel)
+void on_receiving_callback(void *chirp, uint8_t *payload, size_t length, uint8_t channel)
 {
 	set_screen_color(LCD_COLOR_BLUE);
 	printf("Receiving data.\n");
 }
 
-void on_received_callback(void *connect, uint8_t *payload, size_t length, uint8_t channel)
+void on_received_callback(void *chirp, uint8_t *payload, size_t length, uint8_t channel)
 {
 	if (payload)
 	{
 		set_screen_color(LCD_COLOR_GREEN);
-		char *hexa_string = chirp_connect_as_string(connect, payload, length);
+		char hexa_string[length * 2 + 1];
+		payload_to_hex((char *) payload, length, hexa_string);
 		char str_length[16];
 		itoa((int) length, str_length, 10);
 		display_message(hexa_string, LCD_COLOR_BLACK);
@@ -135,49 +148,49 @@ void on_received_callback(void *connect, uint8_t *payload, size_t length, uint8_
  */
 void setup(uint32_t sample_rate)
 {
-	connect = new_chirp_connect(CHIRP_APP_KEY, CHIRP_APP_SECRET);
-	if (connect == NULL)
+	chirp = new_chirp_sdk(CHIRP_APP_KEY, CHIRP_APP_SECRET);
+	if (chirp == NULL)
 	{
-		printf("Chirp Connect initialisation failed.\n");
+		printf("Chirp SDK initialisation failed.\n");
 		error_handler(__func__, __FILE__, __LINE__);
 	}
 
-	chirp_connect_error_code_t err = chirp_connect_set_config(connect, CHIRP_APP_CONFIG);
-	if (err != CHIRP_CONNECT_OK)
+	chirp_sdk_error_code_t err = chirp_sdk_set_config(chirp, CHIRP_APP_CONFIG);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	err = chirp_connect_set_input_sample_rate(connect, sample_rate);
-	if (err != CHIRP_CONNECT_OK)
+	err = chirp_sdk_set_input_sample_rate(chirp, sample_rate);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	err = chirp_connect_set_output_sample_rate(connect, sample_rate);
-	if (err != CHIRP_CONNECT_OK)
+	err = chirp_sdk_set_output_sample_rate(chirp, sample_rate);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	chirp_connect_callback_set_t callbacks = {0};
+	chirp_sdk_callback_set_t callbacks = {0};
 	callbacks.on_sending = on_sending_callback;
 	callbacks.on_sent = on_sent_callback;
 	callbacks.on_receiving = on_receiving_callback;
 	callbacks.on_received = on_received_callback;
-	err = chirp_connect_set_callbacks(connect, callbacks);
-	if (err != CHIRP_CONNECT_OK)
+	err = chirp_sdk_set_callbacks(chirp, callbacks);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	err = chirp_connect_set_callback_ptr(connect, connect);
-	if (err != CHIRP_CONNECT_OK)
+	err = chirp_sdk_set_callback_ptr(chirp, chirp);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
 	// It looks the audio output gets saturated when playing with the default
 	// software volume of 1 thus we decrease it to get a clean output.
-	err = chirp_connect_set_volume(connect, 0.25f);
-	if (err != CHIRP_CONNECT_OK)
+	err = chirp_sdk_set_volume(chirp, 0.25f);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	err = chirp_connect_start(connect);
-	if (err != CHIRP_CONNECT_OK)
+	err = chirp_sdk_start(chirp);
+	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	printf("Chirp Connect initialised.\n");
+	printf("Chirp SDK initialised.\n");
 }
 
 /*
@@ -187,16 +200,16 @@ void setup(uint32_t sample_rate)
  */
 void loop(float *buffer, uint16_t blocksize)
 {
-	chirp_connect_error_code_t error;
+	chirp_sdk_error_code_t error;
 
-	error = chirp_connect_process_input(connect, buffer, blocksize);
-	if (error != CHIRP_CONNECT_OK)
+	error = chirp_sdk_process_input(chirp, buffer, blocksize);
+	if (error != CHIRP_SDK_OK)
 		chirp_error_handler(error);
 
 	// When not sending data, this function fills the buffer with zeroes so it
 	// is fine to leave it even in listening mode.
-	error = chirp_connect_process_output(connect, buffer, blocksize);
-	if (error != CHIRP_CONNECT_OK)
+	error = chirp_sdk_process_output(chirp, buffer, blocksize);
+	if (error != CHIRP_SDK_OK)
 		chirp_error_handler(error);
 
 }

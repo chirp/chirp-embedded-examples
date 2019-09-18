@@ -1,5 +1,6 @@
 *.a
 !*/chirp/*.a
+!*/stm32f469i-discovery/Middlewares/pdm-to-pcm/Lib/*.a
 *.so
 *.o
 *.hex
@@ -10,4 +11,4 @@
 .vscode
 .build
 
-.DS_Store
+*.DS_Store
