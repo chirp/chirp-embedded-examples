@@ -1,7 +1,7 @@
 # Chirp + Bela
 
 Use the high audio fidelity Bela cape for BeagleBone Black board to send and
-receive data via sound with Chirp SDK !
+receive data via sound with the Chirp C SDK !
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ receive data via sound with Chirp SDK !
 
 ## Setup
 
-You can connect the microphone the following way : 
+You can connect the microphone the following way :
 - GND --> P9_01
 - VCC --> P9_03
 - AUD --> LEFT IN - ADC1
@@ -34,12 +34,18 @@ On the right, click on the folder icon (Project Explorer) and then in `Manage pr
 
 Select the type to be `C++` if it is not already selected and enter the name of your project and click on `Create`.
 
-Always in `Project Explorer`, click on `Upload file`. Select `libchirp-connect_linux-arm-hard-shared.so` as well as the `chirp_connect*.h` headers located in the `chirp` folder, `credentials.h` and `render.cpp`. A warning window will tell you `render.cpp` already exist. Click on `Overwrite`. At this point the `Project Explorer` should only display the Chirp files, `credentials.h` and `render.cpp`.
+Always in `Project Explorer`, click on `Upload file`. Select `libchirp-sdk_linux-arm-hard-shared.so` as well as the `chirp_sdk*.h` headers located in the `chirp` folder, `credentials.h` and `render.cpp`. A warning window will tell you `render.cpp` already exist. Click on `Overwrite`. At this point the `Project Explorer` should only display the Chirp files, `credentials.h` and `render.cpp`.
 
 Go to the `Project Settings`, select the `Block size` to 128 and the sample rate to 44100. Then, paste the following line in the `Make Parameters :` field replacing <name_of_your_project> by the name of your actual project :
 
 ```text
-LDFLAGS=-L/root/Bela/projects/<name_of_your_project>;LDLIBS=-lchirp-connect_linux-arm-hard-shared;
+LDFLAGS=-L/root/Bela/projects/<name_of_your_project>;LDLIBS=-lchirp-sdk_linux-arm-hard-shared;
+```
+
+To make the program aware of the location of the library, in the console, run :
+
+```text
+ldconfig /root/Bela/projects/<name_of_your_project>
 ```
 
 Save, compile and run the project. The string "Hello World !" should start being sent as soon as the program starts and decoding at the same time.
