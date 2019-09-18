@@ -71,7 +71,6 @@ void chirp_error_handler(chirp_sdk_error_code_t errorCode)
 	{
 		const char *error_string = chirp_sdk_error_code_to_string(errorCode);
 		printf("Chirp error handler : %s\n", error_string);
-		chirp_sdk_free((void *) error_string);
 		while(true);
 	}
 }

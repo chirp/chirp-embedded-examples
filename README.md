@@ -15,7 +15,7 @@ For all of the example apps you will need to
 
 ![microsoft mxchip](microsoft-mxchip/mxchip.svg)
 
-This example is now part of the examples shipped with the Chirp for Arduino library. Go to [Chirp for Arduino](https://developers.chirp.io/docs/getting-started/arduino) page to now more.
+This example is now part of the examples shipped with the Chirp for Arduino library. Go to [Chirp for Arduino](https://developers.chirp.io/docs/getting-started/arduino) page to know more.
 
 ## STM32F469i Discovery
 
