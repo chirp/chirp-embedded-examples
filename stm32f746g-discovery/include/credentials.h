@@ -18,5 +18,4 @@
 #define CHIRP_APP_SECRET     "YOUR_APP_SECRET"
 #define CHIRP_APP_CONFIG     "YOUR_APP_CONFIG"
 
-
 #endif /* __CREDENTIALS_H__ */

@@ -15,9 +15,7 @@ For all of the example apps you will need to
 
 ![microsoft mxchip](microsoft-mxchip/mxchip.svg)
 
-This example shows a simple demonstration of sending and receiving data with the Chirp SDK on the MXChip.
-
-See the [README](microsoft-mxchip/README.md) for further details.
+This example is now part of the examples shipped with the Chirp for Arduino library. Go to [Chirp for Arduino](https://developers.chirp.io/docs/getting-started/arduino) page to know more.
 
 ## STM32F469i Discovery
 

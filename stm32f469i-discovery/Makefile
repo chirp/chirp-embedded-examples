@@ -117,7 +117,7 @@ LDFLAGS	=	-Tldscripts/STM32F469NIHx_FLASH.ld \
 					-Lchirp \
 					-LMiddlewares/pdm-to-pcm/Lib
 
-LIBS	=	-lchirp-connect_none-armv7m-cm4-$(FLOAT_ABI) \
+LIBS	=	-lchirp-sdk_none-armv7m-cm4-$(FLOAT_ABI) \
 			-lPDMFilter_CM4_GCC
 
 all:	proj

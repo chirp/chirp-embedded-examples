@@ -235,7 +235,7 @@
                                     									
                                     <listOptionValue builtIn="false" value="PDMFilter_CM7_GCC"/>
                                     									
-                                    <listOptionValue builtIn="false" value="chirp-connect_none-armv7m-cm7-hard"/>
+                                    <listOptionValue builtIn="false" value="chirp-sdk_none-armv7m-cm7-hard"/>
                                     								
                                 </option>
                                 								

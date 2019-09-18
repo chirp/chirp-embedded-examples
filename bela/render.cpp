@@ -18,7 +18,7 @@
 #include <string>
 
 #include "credentials.h"
-#include "chirp_connect.h"
+#include "chirp_sdk.h"
 
 /*
  * Mirrors the block size set in the Bela config.
@@ -51,7 +51,7 @@ static int input_channel = 0;
 /*
  * Global instance of the SDK.
  */
-static chirp_connect_t *connect = NULL;
+static chirp_sdk_t *chirp = NULL;
 
 /*
  * Auxiliary task to process the incoming audio.
@@ -66,8 +66,8 @@ static AuxiliaryTask chirp_auxiliary_output_task = NULL;
 void chirp_process_input_audio(void* data)
 {
     static int read_pointer = 0;
-    chirp_connect_t *connect = (chirp_connect_t *) data;
-    if (chirp_connect_process_input(connect, &input_buffer[read_pointer], block_size) != CHIRP_CONNECT_OK)
+    chirp_sdk_t *chirp = (chirp_sdk_t *) data;
+    if (chirp_sdk_process_input(chirp, &input_buffer[read_pointer], block_size) != CHIRP_SDK_OK)
     {
         rt_printf("Process decoding error\n");
     }
@@ -77,8 +77,8 @@ void chirp_process_input_audio(void* data)
 void chirp_process_output_audio(void* data)
 {
     static int write_pointer = 0;
-    chirp_connect_t *connect = (chirp_connect_t *) data;
-    if (chirp_connect_process_output(connect, &output_buffer[write_pointer], block_size) != CHIRP_CONNECT_OK)
+    chirp_sdk_t *chirp = (chirp_sdk_t *) data;
+    if (chirp_sdk_process_output(chirp, &output_buffer[write_pointer], block_size) != CHIRP_SDK_OK)
     {
         rt_printf("Process encoding error\n");
     }
@@ -101,7 +101,7 @@ void on_received_callback(void *ptr, uint8_t *payload, size_t length, uint8_t ch
 
 }
 
-void on_state_changed_callback(void *ptr, chirp_connect_state_t old_state, chirp_connect_state_t new_state)
+void on_state_changed_callback(void *ptr, chirp_sdk_state_t old_state, chirp_sdk_state_t new_state)
 {
     rt_printf("State changed\n");
 }
@@ -133,87 +133,87 @@ bool setup(BelaContext *context, void *userData)
     output_buffer = (float*) calloc(buffer_size, sizeof(float));
 
 
-    connect = new_chirp_connect(CHIRP_APP_KEY, CHIRP_APP_SECRET);
-    if (connect == NULL)
+    chirp = new_chirp_sdk(CHIRP_APP_KEY, CHIRP_APP_SECRET);
+    if (chirp == NULL)
     {
-        rt_printf("Connect is NULL\n");
+        rt_printf("SDK is NULL\n");
     }
 
-    chirp_connect_error_code_t ret = chirp_connect_set_config(connect, CHIRP_APP_CONFIG);
-    if(ret != CHIRP_CONNECT_OK)
+    chirp_sdk_error_code_t ret = chirp_sdk_set_config(chirp, CHIRP_APP_CONFIG);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Set config error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
-    chirp_connect_callback_set_t callbacks = {0};
+    chirp_sdk_callback_set_t callbacks = {0};
     callbacks.on_state_changed = on_state_changed_callback;
     callbacks.on_sending = on_sending_callback;
     callbacks.on_sent = on_sent_callback;
     callbacks.on_receiving = on_receiving_callback;
     callbacks.on_received = on_received_callback;
-    ret = chirp_connect_set_callbacks(connect, callbacks);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_set_callbacks(chirp, callbacks);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Callback error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
-    ret = chirp_connect_set_callback_ptr(connect, connect);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_set_callback_ptr(chirp, chirp);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Callbackptr error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
     /*
      * Tell the SDK it can decode what it sends.
      */
-    ret = chirp_connect_set_auto_mute(connect, false);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_set_listen_to_self(chirp, true);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Auto mute error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
-    ret = chirp_connect_set_volume(connect, 0.9);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_set_volume(chirp, 0.9);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Set volume error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
-    ret = chirp_connect_set_input_sample_rate(connect, context->audioSampleRate);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_set_input_sample_rate(chirp, context->audioSampleRate);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Set input sample rate error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
-    ret = chirp_connect_set_output_sample_rate(connect, context->audioSampleRate);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_set_output_sample_rate(chirp, context->audioSampleRate);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Set output sample rate error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
-    ret = chirp_connect_start(connect);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_start(chirp);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Start connect error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
     /*
      * Start the auxiliary tasks
      */
-    if ((chirp_auxiliary_input_task = Bela_createAuxiliaryTask (&chirp_process_input_audio, 80, "chirp-auxiliary-input-task", connect)) == NULL) return false;
+    if ((chirp_auxiliary_input_task = Bela_createAuxiliaryTask (&chirp_process_input_audio, 80, "chirp-auxiliary-input-task", chirp)) == NULL) return false;
 
-    if ((chirp_auxiliary_output_task = Bela_createAuxiliaryTask (&chirp_process_output_audio, 80, "chirp-auxiliary-output-task", connect)) == NULL) return false;
+    if ((chirp_auxiliary_output_task = Bela_createAuxiliaryTask (&chirp_process_output_audio, 80, "chirp-auxiliary-output-task", chirp)) == NULL) return false;
 
-    char *info = chirp_connect_get_info(connect);
-    rt_printf("%s - Version : %s \n", info, chirp_connect_get_version());
-    chirp_connect_free(info);
+    char *info = chirp_sdk_get_info(chirp);
+    rt_printf("%s - Version : %s - Build %s\n", info, chirp_sdk_get_version(), chirp_sdk_get_build_number());
+    chirp_sdk_free(info);
 
     std::string payload = "Hello World !";
     size_t payload_length = strlen(payload.c_str());
 
-    ret = chirp_connect_send(connect, (uint8_t *) payload.c_str(), payload_length);
-    if(ret != CHIRP_CONNECT_OK)
+    ret = chirp_sdk_send(chirp, (uint8_t *) payload.c_str(), payload_length);
+    if(ret != CHIRP_SDK_OK)
     {
-        rt_printf("Send error\n");
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
     }
 
     return true;
@@ -257,7 +257,11 @@ void render(BelaContext *context, void *userData)
 
 void cleanup(BelaContext *context, void *userData)
 {
-    del_chirp_connect(&connect);
+    chirp_sdk_error_code_t ret = del_chirp_sdk(&chirp);
+    if (ret != CHIRP_SDK_OK)
+    {
+        rt_printf("Chirp error : %s\n", chirp_sdk_error_code_to_string(ret));
+    }
     free(input_buffer);
     free(output_buffer);
 }

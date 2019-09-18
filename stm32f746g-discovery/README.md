@@ -1,6 +1,6 @@
 # STM32F746G-DISCOVERY example
 
-This example shows a simple demonstration of the Chirp SDK. The example will start in listening mode,
+This example shows a simple demonstration of the Chirp C SDK. The example will start in listening mode,
 but can be changed to playing mode and vice versa by pressing the user button (blue one).
 
 Each time the SDK starts receiving some data, the screen will turn blue.
@@ -24,8 +24,8 @@ The audio data is sent via the 3.5mm jack output.
 
 ## Setup
 
-Copy/paste your Chirp app key, secret and config string for the `16kHz` protocol into the `credentials.h` file.
-Currently only the `16kHz` protocol will work on embedded devices.
+Copy/paste your Chirp app key, secret and config string for the `16kHz-mon-embedded` protocol into the `credentials.h` file.
+Currently only the `16kHz-mon-embedded` protocol will work on embedded devices.
 
 ## Building
 
@@ -60,7 +60,7 @@ Depending on how your Eclipse setup is, you might need to set up your compiler a
 
 This example is ready to open in Eclipse.
 
-Just right click on `chirp-connect-stm32f746g-discovery-demo Debug.launch` -> `Debug As` -> `chirp-connect-stm32f746g-discovery-demo Debug`.
+Just right click on `chirp-sdk-stm32f746g-discovery-demo Debug.launch` -> `Debug As` -> `chirp-sdk-stm32f746g-discovery-demo Debug`.
 
 ## Known issues and limitations
 
