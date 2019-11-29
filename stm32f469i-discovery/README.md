@@ -64,6 +64,4 @@ Just right click on `chirp-sdk-stm32f469i-discovery-demo Debug.launch` -> `Debug
 
 ## Known issues and limitations
 
- * Unfortunately, the audio drivers provided by ST through the HAL are not properly working. This leads to the decoding of payloads not working.
-
  * For some reason, the theoretical conversion form float to unsigned short doesn't work well. To avoid this issue, the float value is moved from being between 0 and 2 to being between 1 and 3. This create some discontinuities in the buffer containing the unsigned short values but the audio output is correct.
