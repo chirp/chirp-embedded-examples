@@ -132,6 +132,7 @@ void on_received_callback(void *chirp, uint8_t *payload, size_t length, uint8_t 
 		itoa((int) length, str_length, 10);
 		display_message(hexa_string, LCD_COLOR_BLACK);
 		display_message(str_length, LCD_COLOR_BLACK);
+		printf("Received: %s\n", hexa_string);
 	}
 	else
 	{
@@ -185,6 +186,10 @@ void setup(uint32_t sample_rate)
 	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
+	err = chirp_sdk_set_frequency_correction(chirp, 0.9976720f);
+	if (err != CHIRP_SDK_OK)
+		chirp_error_handler(err);
+
 	err = chirp_sdk_start(chirp);
 	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
@@ -210,5 +215,4 @@ void loop(float *buffer, uint16_t blocksize)
 	error = chirp_sdk_process_output(chirp, buffer, blocksize);
 	if (error != CHIRP_SDK_OK)
 		chirp_error_handler(error);
-
 }
