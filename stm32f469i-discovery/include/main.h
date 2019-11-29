@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <stdbool.h>
+
 // Here to provide LCD colors in application.c
 #include "stm32469i_discovery_lcd.h"
 
