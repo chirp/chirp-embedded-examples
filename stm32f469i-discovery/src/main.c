@@ -111,20 +111,23 @@ void button_user_event(void)
 				return;
 			}
 
-			if (BSP_AUDIO_IN_Record(&pdm_buffer[0], PDM_BUFFER_SIZE) != AUDIO_OK)
+			if (!init_audio_input())
 			{
-				printf("Recording failed.\n");
+				printf("Failed to initialise audio input\n");
 				return;
 			}
-
-			display_message("Listening.", LCD_COLOR_BLACK);
-			audio_state = LISTENING;
 		}
 		else if (audio_state == LISTENING)
 		{
 			if (BSP_AUDIO_IN_Stop() != AUDIO_OK)
 			{
 				printf("Stopping recording failed.\n");
+				return;
+			}
+
+			if (!init_audio_output())
+			{
+				printf("Failed to initialise audio output\n");
 				return;
 			}
 
@@ -277,20 +280,13 @@ void BSP_AUDIO_OUT_Error_CallBack(void)
 /*
  * Initialise the audio and set the audio state as listening.
  */
-bool init_audio(void)
+bool init_audio_input(void)
 {
 	if (BSP_AUDIO_IN_Init(SAMPLE_RATE, DEFAULT_AUDIO_IN_BIT_RESOLUTION, DEFAULT_AUDIO_IN_CHANNEL_NBR) != AUDIO_OK)
 	{
 		printf("Audio IN initialisation failed\n");
 		return false;
 	}
-
-	if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE, VOLUME, SAMPLE_RATE) != AUDIO_OK)
-	{
-		printf("Audio OUT initialisation failed\n");
-		return false;
-	}
-	BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
 
 	if (BSP_AUDIO_IN_Record(&pdm_buffer[0], PDM_BUFFER_SIZE) != AUDIO_OK)
 	{
@@ -300,6 +296,18 @@ bool init_audio(void)
 
 	audio_state = LISTENING;
 	display_message("Listening.", LCD_COLOR_BLACK);
+
+	return true;
+}
+
+bool init_audio_output(void)
+{
+	if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE, VOLUME, SAMPLE_RATE) != AUDIO_OK)
+	{
+		printf("Audio OUT initialisation failed\n");
+		return false;
+	}
+	BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
 
 	return true;
 }
@@ -393,7 +401,7 @@ int main(void)
 
 	setup(SAMPLE_RATE);
 
-	if (!init_audio())
+	if (!init_audio_input())
 	{
 		printf("Audio initialisation failed.\n");
 		error_handler(__func__, __FILE__, __LINE__);
@@ -401,23 +409,13 @@ int main(void)
 
 	printf("Audio initialised.\n");
 
+
 	while (true)
 	{
 		process_audio();
 	}
 
 	return 0;
-}
-
-void BSP_AUDIO_IN_ClockConfig(I2S_HandleTypeDef *hi2s, void *Params)
-{
-  RCC_PeriphCLKInitTypeDef RCC_ExCLKInitStruct;
-
-  HAL_RCCEx_GetPeriphCLKConfig(&RCC_ExCLKInitStruct);
-  RCC_ExCLKInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2S;
-  RCC_ExCLKInitStruct.PLLI2S.PLLI2SN = 258;
-  RCC_ExCLKInitStruct.PLLI2S.PLLI2SR = 3;
-  HAL_RCCEx_PeriphCLKConfig(&RCC_ExCLKInitStruct);
 }
 
 /**
