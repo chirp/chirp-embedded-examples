@@ -39,9 +39,9 @@ void loop(float *buffer, uint16_t blocksize);
  * Drivers/BSP/STM32F$69I-Discovery/stm32f469_discovery_audio.h.
  */
 #define VOLUME 					100
-#define SAMPLE_RATE 			16000
+#define SAMPLE_RATE 			44100
 #define PDM_BUFFER_SIZE 		INTERNAL_BUFF_SIZE
-#define SHORT_BUFFER_SIZE 		(PCM_OUT_SIZE * 2)
+#define SHORT_BUFFER_SIZE 		(PCM_OUT_SIZE * 10)
 
 /*
  * The float buffer is a quarter the short buffer because it will represent half
@@ -370,8 +370,9 @@ void process_audio(void)
 			// Convert a mono float buffer into half of a stereo short one.
 			for (size_t i = 0; i < FLOAT_BUFFER_SIZE; i++)
 			{
-				short_play_buffer[play_buffer_offset + i * 2] = float_to_uint16(float_buffer[i]);
-				short_play_buffer[play_buffer_offset + i * 2 + 1] = float_to_uint16(float_buffer[i]);
+				uint16_t value = float_to_uint16(float_buffer[i]);
+				short_play_buffer[play_buffer_offset + i * 2] = value;
+				short_play_buffer[play_buffer_offset + i * 2 + 1] = value;
 			}
 
 			play_buffer_state = BUFFER_STATE_EMPTY;

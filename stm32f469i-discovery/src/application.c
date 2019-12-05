@@ -44,7 +44,7 @@
 #include "main.h"
 
 #define CORRECTION_16K		0.9976720f
-#define CORRECTION_44K		1.0038439f
+#define CORRECTION_44K		1.0004028f
 #define CORRECTION_48K		1.0196455f
 
 /*
@@ -190,13 +190,20 @@ void setup(uint32_t sample_rate)
 	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	if (sample_rate == 16000) {
+	if (sample_rate == 16000)
+	{
 		err = chirp_sdk_set_frequency_correction(chirp, CORRECTION_16K);
-	} else if (sample_rate == 44100) {
+	}
+	else if (sample_rate == 44100)
+	{
 		err = chirp_sdk_set_frequency_correction(chirp, CORRECTION_44K);
-	} else if (sample_rate == 48000) {
+	}
+	else if (sample_rate == 48000)
+	{
 		err = chirp_sdk_set_frequency_correction(chirp, CORRECTION_48K);
-	} else {
+	}
+	else
+	{
 		printf("Sample rate %ld not supported\n", sample_rate);
 	}
 	if (err != CHIRP_SDK_OK)
