@@ -33,16 +33,21 @@ void SystemClock_Config(void);
 void setup(uint32_t sample_rate);
 void loop(float *buffer, uint16_t blocksize);
 
-#define VOLUME 100
-#define SAMPLE_RATE 16000
-#define PDM_BUFFER_SIZE INTERNAL_BUFF_SIZE
-#define SHORT_BUFFER_SIZE (PCM_OUT_SIZE * 10)
+/*
+ * Important - to change the sample rate you also need to change
+ * DEFAULT_AUDIO_IN_FREQ to the required sample rate in
+ * Drivers/BSP/STM32F$69I-Discovery/stm32f469_discovery_audio.h.
+ */
+#define VOLUME 					100
+#define SAMPLE_RATE 			16000
+#define PDM_BUFFER_SIZE 		INTERNAL_BUFF_SIZE
+#define SHORT_BUFFER_SIZE 		(PCM_OUT_SIZE * 2)
 
 /*
  * The float buffer is a quarter the short buffer because it will represent half
  * of the short buffer (division by 2) in mono samples (another division by 2).
  */
-#define FLOAT_BUFFER_SIZE (SHORT_BUFFER_SIZE / 4)
+#define FLOAT_BUFFER_SIZE		(SHORT_BUFFER_SIZE / 4)
 
 /*
  * Used to keep track of the state of buffers.
@@ -408,7 +413,6 @@ int main(void)
 	}
 
 	printf("Audio initialised.\n");
-
 
 	while (true)
 	{
