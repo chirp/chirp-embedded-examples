@@ -43,6 +43,10 @@
  */
 #include "main.h"
 
+#define CORRECTION_16K		0.9976720f
+#define CORRECTION_44K		1.0004028f
+#define CORRECTION_48K		1.0196455f
+
 /*
  * Global pointer to the SDK structure. This is global as this pointer is
  * needed when processing the audio in the loop() function.
@@ -186,7 +190,22 @@ void setup(uint32_t sample_rate)
 	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 
-	err = chirp_sdk_set_frequency_correction(chirp, 0.9976720f);
+	if (sample_rate == 16000)
+	{
+		err = chirp_sdk_set_frequency_correction(chirp, CORRECTION_16K);
+	}
+	else if (sample_rate == 44100)
+	{
+		err = chirp_sdk_set_frequency_correction(chirp, CORRECTION_44K);
+	}
+	else if (sample_rate == 48000)
+	{
+		err = chirp_sdk_set_frequency_correction(chirp, CORRECTION_48K);
+	}
+	else
+	{
+		printf("Sample rate %ld not supported\n", sample_rate);
+	}
 	if (err != CHIRP_SDK_OK)
 		chirp_error_handler(err);
 

@@ -215,7 +215,7 @@
 #define AUDIO_TIMEOUT                       ((uint8_t)2)
 
 /* AudioFreq * DataSize (2 bytes) * NumChannels (Stereo: 2) */
-#define DEFAULT_AUDIO_IN_FREQ               I2S_AUDIOFREQ_16K
+#define DEFAULT_AUDIO_IN_FREQ               I2S_AUDIOFREQ_44K
 #define DEFAULT_AUDIO_IN_BIT_RESOLUTION     ((uint8_t)16)
 #define DEFAULT_AUDIO_IN_CHANNEL_NBR        ((uint8_t)2) /* Mono = 1, Stereo = 2 */
 #define DEFAULT_AUDIO_IN_VOLUME             ((uint16_t)64)
@@ -318,17 +318,17 @@ void    BSP_AUDIO_IN_Error_Callback(void);
 
 /* These function can be modified in case the current settings (e.g. DMA stream)
    need to be changed for specific application needs */
-void  BSP_AUDIO_IN_ClockConfig(I2S_HandleTypeDef *hi2s, void *Params);   
+void  BSP_AUDIO_IN_ClockConfig(I2S_HandleTypeDef *hi2s, void *Params);
 void  BSP_AUDIO_IN_MspInit(I2S_HandleTypeDef *hi2s, void *Params);
 void  BSP_AUDIO_IN_MspDeInit(I2S_HandleTypeDef *hi2s, void *Params);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

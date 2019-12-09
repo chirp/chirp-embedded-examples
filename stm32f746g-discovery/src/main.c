@@ -34,19 +34,10 @@ void SystemClock_Config(void);
 void setup(uint32_t sample_rate);
 void loop(float *buffer, uint16_t blocksize);
 
-#define VOLUME 100
-/*
- * The sample rate is higher than the one naming the config file from Chirp. It
- * doesn't matter as long as it is higher than 16kHz.
- */
-#define SAMPLE_RATE 16000
-#define SHORT_BUFFER_SIZE 2048
-
-/*
- * The float buffer is a quarter the short buffer because it will represent half
- * of the short buffer (division by 2) in mono samples (another division by 2).
- */
-#define FLOAT_BUFFER_SIZE (SHORT_BUFFER_SIZE / 4)
+#define VOLUME 				100
+#define SAMPLE_RATE 	  	44100
+#define SHORT_BUFFER_SIZE 	2048
+#define FLOAT_BUFFER_SIZE 	(SHORT_BUFFER_SIZE / 4)
 
 /*
  * Used to keep track of the state of buffers.
@@ -235,8 +226,8 @@ void BSP_AUDIO_OUT_Error_CallBack(void)
  */
 bool init_audio(void)
 {
-	if (BSP_AUDIO_IN_OUT_Init(INPUT_DEVICE_DIGITAL_MICROPHONE_2,OUTPUT_DEVICE_HEADPHONE,
-			SAMPLE_RATE, DEFAULT_AUDIO_IN_BIT_RESOLUTION,DEFAULT_AUDIO_IN_CHANNEL_NBR))
+	if (BSP_AUDIO_IN_OUT_Init(INPUT_DEVICE_DIGITAL_MICROPHONE_2, OUTPUT_DEVICE_HEADPHONE,
+			SAMPLE_RATE, DEFAULT_AUDIO_IN_BIT_RESOLUTION, DEFAULT_AUDIO_IN_CHANNEL_NBR))
 	{
 		printf("Audio IN/OUT initialisation failed.\n");
 		return false;
@@ -312,8 +303,10 @@ void process_audio(void)
 			// Convert a mono float buffer into half of a stereo short one.
 			for (size_t i = 0; i < FLOAT_BUFFER_SIZE; i++)
 			{
-				short_play_buffer[play_buffer_offset + i * 2] = float_to_uint16(float_buffer[i]);
-				short_play_buffer[play_buffer_offset + i * 2 + 1] = float_to_uint16(float_buffer[i]);
+				uint16_t value = float_to_uint16(float_buffer[i]);
+				short_play_buffer[play_buffer_offset + i * 2] = value;
+				short_play_buffer[play_buffer_offset + i * 2 + 1] = value;
+
 			}
 
 			play_buffer_state = BUFFER_STATE_EMPTY;

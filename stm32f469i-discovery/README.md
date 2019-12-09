@@ -64,4 +64,7 @@ Just right click on `chirp-sdk-stm32f469i-discovery-demo Debug.launch` -> `Debug
 
 ## Known issues and limitations
 
+ * To change the sample rate from 16kHz, you will need to update the `DEFAULT_AUDIO_IN_FREQ` define in
+ [stm32f468i_discovery_audio.h](./Drivers/STM32F$69I-Discovery/stm32f469_discovery_audio.h).
+
  * For some reason, the theoretical conversion form float to unsigned short doesn't work well. To avoid this issue, the float value is moved from being between 0 and 2 to being between 1 and 3. This create some discontinuities in the buffer containing the unsigned short values but the audio output is correct.

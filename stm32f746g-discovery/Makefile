@@ -99,7 +99,7 @@ CFLAGS	+=	-DSTM32F746xx \
 			-g3 \
 			-Wall \
 			-mthumb \
-			-mcpu=cortex-m4 \
+			-mcpu=cortex-m7 \
 			-mfloat-abi=$(FLOAT_ABI) \
 			-mfpu=fpv4-sp-d16 \
 			-fmessage-length=0 \
